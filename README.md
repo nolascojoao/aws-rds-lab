@@ -1,7 +1,7 @@
 # AWS RDS Lab
 
 <div align="center">
-  <img src="screenshot/architecture-lab.png"/>
+  <img src="screenshot/architecture-lab.jpg"/>
 </div>
 
 ---
