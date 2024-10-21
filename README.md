@@ -216,7 +216,8 @@ aws ec2 authorize-security-group-ingress \
 ```bash
 aws ec2 authorize-security-group-ingress \
   --group-id <WebServer-SG-ID> \
-  --protocol tcp --port 80 \
+  --protocol tcp
+  --port 80 \
   --cidr <MY-PUBLIC-IP>/32
 ```
 
@@ -476,3 +477,16 @@ aws ec2 delete-vpc --vpc-id <vpc-id>
 <div align="center">
   <img src="screenshot/10.11.PNG"/>
 </div>
+
+---
+
+# Alternatively
+- Run RDS-LAB.sh to automate the lab setup:
+```bash
+./RDS-LAB.sh
+```
+
+<div align="center">
+  <img src="screenshot/R1.PNG"/>
+</div>
+
