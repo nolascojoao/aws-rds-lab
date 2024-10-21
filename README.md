@@ -263,6 +263,8 @@ aws ec2 create-key-pair \
   <img src="screenshot/7.1.PNG"/>
 </div>
 
+#
+
 - **AMI Suggestion:** `ami-0ebfd941bbafe70c6`. [Find an AMI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
 ```bash
 aws ec2 run-instances \
