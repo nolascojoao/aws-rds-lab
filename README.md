@@ -147,7 +147,7 @@ aws ec2 authorize-security-group-ingress \
 aws ec2 create-key-pair \
   --key-name <KeyPairName> \
   --query 'KeyMaterial' \
-  --output text <KeyPairName>.pem
+  --output text > <KeyPairName>.pem
 ```
 - **AMI Suggestion:** `ami-0ebfd941bbafe70c6`. [Find an AMI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
 ```bash
@@ -158,7 +158,7 @@ aws ec2 run-instances \
   --security-group-ids <WebServerSG-ID> \
   --subnet-id <PublicSubnet2Id> \
   --associate-public-ip-address \
-  --user-data file://install-web-server.sh \
+  --user-data file://setup.sh \
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=LAB-WS}]'
 ```
 ---
@@ -172,15 +172,20 @@ aws rds create-db-subnet-group \
 ```bash
 aws rds create-db-instance \
   --db-instance-identifier MyDBInstance \
-  --db-instance-class db.t2.micro \
+  --db-instance-class db.t3.micro \
   --engine mysql \
   --allocated-storage 20 \
   --master-username admin \
   --master-user-password password \
   --vpc-security-group-ids <RDS-SG-ID> \
   --db-subnet-group-name <MyDBSubnetGroup> \
-  --multi-az \
-  --publicly-accessible false
+  --multi-az 
+```
+- It takes a few minutes until the instance is launched
+```bash
+aws rds describe-db-instances \
+--db-instance-identifier MyDBInstance \
+--query "DBInstances[*].[Endpoint.Address,AvailabilityZone,PreferredBackupWindow,BackupRetentionPeriod,DBInstanceStatus]"
 ```
 ---
 ## Step 9: Test the Connection
@@ -210,11 +215,6 @@ Delete NAT Gateway
 ```bash
 aws ec2 delete-nat-gateway --nat-gateway-id <nat-gateway-id>
 ```
-Delete Security Groups
-```bash
-aws ec2 delete-security-group --group-id <WebServer-SG-ID>
-aws ec2 delete-security-group --group-id <RDS-SG-ID>
-```
 Detach and Delete Internet Gateway
 ```bash
 aws ec2 detach-internet-gateway --internet-gateway-id <igw-id> --vpc-id <vpc-id>
@@ -222,10 +222,18 @@ aws ec2 detach-internet-gateway --internet-gateway-id <igw-id> --vpc-id <vpc-id>
 ```bash
 aws ec2 delete-internet-gateway --internet-gateway-id <igw-id>
 ```
-Delete Route Tables
+Delete DB Subnet Group
 ```bash
-aws ec2 delete-route-table --route-table-id <public-route-table-id>
-aws ec2 delete-route-table --route-table-id <private-route-table-id>
+aws rds delete-db-subnet-group --db-subnet-group-name <your-db-subnet-group-name>
+```
+Delete Security Groups
+```bash
+aws ec2 delete-security-group --group-id <RDS-SG-ID>
+aws ec2 delete-security-group --group-id <WebServer-SG-ID>
+```
+Release Elastic IP
+```bash
+aws ec2 release-address --allocation-id <allocation-id>
 ```
 Delete Subnets
 ```bash
@@ -234,11 +242,12 @@ aws ec2 delete-subnet --subnet-id <PublicSubnet2Id>
 aws ec2 delete-subnet --subnet-id <PrivateSubnet1Id>
 aws ec2 delete-subnet --subnet-id <PrivateSubnet2Id>
 ```
+Delete Route Tables
+```bash
+aws ec2 delete-route-table --route-table-id <public-route-table-id>
+aws ec2 delete-route-table --route-table-id <private-route-table-id>
+```
 Delete VPC
 ```bash
 aws ec2 delete-vpc --vpc-id <vpc-id>
-```
-Release Elastic IP
-```bash
-aws ec2 release-address --allocation-id <allocation-id>
 ```
