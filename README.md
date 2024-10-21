@@ -1,9 +1,15 @@
 # AWS RDS Lab
 
+- Set up a resilient AWS RDS environment with a multi-AZ architecture
+
 <div align="center">
   <img src="screenshot/architecture-lab.jpg"/>
 </div>
 
+---
+⚠️ **NOTE**: 
+- All tasks will be executed using AWS CLI. Ensure you have the necessary permissions. [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- Charges may apply for this lab. [AWS Pricing](https://aws.amazon.com/pricing/)
 ---
 
 ## Step 1: Create the VPC
