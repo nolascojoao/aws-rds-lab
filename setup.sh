@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # Update the instance packages
 sudo dnf update -y
 
