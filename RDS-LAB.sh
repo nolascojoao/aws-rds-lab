@@ -243,7 +243,7 @@ aws rds wait db-instance-available \
   --db-instance-identifier $RDS_INSTANCE
 
 RDS_ENDPOINT=$(aws rds describe-db-instances \
-  --db-instance-identifier MyDBInstance) \
+  --db-instance-identifier MyDBInstance \
   --query 'DBInstances[0].Endpoint.Address' \
   --output text)
 
